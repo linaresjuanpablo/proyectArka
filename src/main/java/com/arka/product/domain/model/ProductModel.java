@@ -1,10 +1,11 @@
 package com.arka.product.domain.model;
 
-import jakarta.persistence.Column;
+
 import lombok.*;
 
 import java.util.UUID;
 
+//@Data
 @Setter
 @Getter
 @NoArgsConstructor

@@ -1,50 +1,42 @@
-package com.arka.product.infrastruture.entity;
+package com.arka.product.infrastruture.output.entity;
 
 import com.arka.product.domain.model.ProductModel;
-import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 
 
 import java.util.UUID;
 
-@Entity
+
 @Setter @Getter
 @NoArgsConstructor @AllArgsConstructor
 @Data
 @Table(name = "product")
 public class ProductEntity {
 
-//    public ProductEntity(long id, UUID uuid, String name, String description, Double price, String sku, String quantity) {
-//        this.id = id;
-//        this.uuid = uuid;
-//        this.name = name;
-//        this.description = description;
-//        this.price = price;
-//        this.sku = sku;
-//        this.quantity = quantity;
-//    }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column("id")
     private long id;
 
-    @Column(name = "uuid")
+    @Column("uuid")
     private UUID uuid;
 
-    @Column(name = "name")
+    @Column("name")
     private String name;
 
-    @Column(name = "description")
+    @Column("description")
     private String description;
 
-    @Column(name = "price")
+    @Column( "price")
     private Double price;
 
-    @Column(name = "sku")
+    @Column( "sku")
     private String sku;
 
-    @Column(name = "quantity")
+    @Column("quantity")
     private String quantity;
 
 
