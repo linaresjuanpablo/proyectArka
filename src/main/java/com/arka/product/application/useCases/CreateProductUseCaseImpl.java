@@ -1,4 +1,4 @@
-package com.arka.product.application.useCases;
+/*package com.arka.product.application.useCases;
 
 import com.arka.product.domain.model.ProductModel;
 import com.arka.product.domain.ports.in.ICreateProductUseCase;
@@ -19,4 +19,4 @@ public class CreateProductUseCaseImpl implements ICreateProductUseCase {
     public Mono<ProductModel> createProduct(ProductModel productModel) {
         return iProductRepositoryPort.save(productModel);
     }
-}
+}*/

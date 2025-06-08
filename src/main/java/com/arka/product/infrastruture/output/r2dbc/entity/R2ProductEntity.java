@@ -7,12 +7,12 @@ import org.springframework.data.relational.core.mapping.Table;
 
 import java.util.UUID;
 @Data
-@Table("\"product\"")
+@Table("product")
 
 public class R2ProductEntity {
     @Id
     @Column( "id")
-    private long id;
+    private Long id;
 
     @Column("uuid")
     private UUID uuid;
@@ -30,5 +30,11 @@ public class R2ProductEntity {
     private String sku;
 
     @Column("quantity")
-    private String quantity;
+    private Integer quantity;
+
+    @Column("id_brand")
+    private Long id_brand;
+
+    @Column("id_category")
+    private Long id_category;
 }

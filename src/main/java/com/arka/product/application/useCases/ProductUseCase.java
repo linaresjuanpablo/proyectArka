@@ -21,7 +21,7 @@ import java.util.UUID;
 
 public class ProductUseCase  implements ICreateProductUseCase {
 
-    private final ICreateProductUseCase iCreateProductUseCase;
+    //private final ICreateProductUseCase iCreateProductUseCase;
     private final IProductRepositoryPort iProductRepositoryPort;
 
     private static final Integer NAME_MIN_LENGTH = 3;

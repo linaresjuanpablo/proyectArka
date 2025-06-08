@@ -25,6 +25,7 @@ public class ProductAdapter implements IProductRepositoryPort {
 
     @Override
     public Mono<ProductModel> findBySku(String sku) {
-        return null;
+        return ir2ProductRepository.findBySku(sku)
+                .map(iProductMapperEntity::prodModel);
     }
 }

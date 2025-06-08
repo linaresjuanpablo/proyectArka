@@ -8,5 +8,7 @@ import reactor.core.publisher.Mono;
 
 @Repository
 public interface IR2ProductRepository extends ReactiveCrudRepository<R2ProductEntity, Long> {
+    Mono<R2ProductEntity> findBySku(String sku);
+
 
 }

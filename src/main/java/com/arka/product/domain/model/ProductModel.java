@@ -14,7 +14,7 @@ import java.util.UUID;
 
 public class ProductModel {
 
-    private long id;
+    private Long id;
 
     private UUID uuid;
 
@@ -26,7 +26,12 @@ public class ProductModel {
 
     private String sku;
 
-    private String quantity;
+    private Integer quantity;
+
+    private Long id_brand;
+
+    private Long id_category;
+
 
 
 }

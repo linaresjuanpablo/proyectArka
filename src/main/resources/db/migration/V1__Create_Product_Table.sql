@@ -7,5 +7,5 @@ CREATE TABLE IF NOT EXISTS proyectarka.product (
   description VARCHAR(45),
   price DOUBLE PRECISION,
   sku VARCHAR(45),
-  quantity VARCHAR(45)
+  quantity INTEGER
 );
