@@ -1,6 +1,8 @@
 package com.arka.product.infrastruture.input.exception;
 
 import com.arka.product.domain.exception.BusinessException;
+import com.arka.product.domain.exception.DataAccessException;
+import com.arka.product.domain.exception.ValidationException;
 import com.arka.product.domain.exception.error.CommonErrorCode;
 import com.arka.product.domain.exception.error.IErrorCode;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -14,6 +16,9 @@ import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DataBufferFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.bind.support.WebExchangeBindException;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.server.ServerWebExchange;
@@ -29,6 +34,7 @@ import static com.arka.product.infrastruture.util.ConstantsConfiguration.*;
 @Order(-2)
 @Slf4j
 @RequiredArgsConstructor
+@RestControllerAdvice
 
 public class GlobalExceptionHandler implements ErrorWebExceptionHandler {
 
@@ -81,5 +87,18 @@ public class GlobalExceptionHandler implements ErrorWebExceptionHandler {
 
 
         return null;
+    }
+
+    @ExceptionHandler(ValidationException.class)
+    public Mono<ResponseEntity<ErrorResponse>> handleValidationException(ValidationException ex){
+        ErrorResponse errorResponse = new ErrorResponse(ex.getCode(), ex.getMessage());
+        return Mono.just(ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse));
+
+    }
+
+    @ExceptionHandler(DataAccessException.class)
+    public Mono<ResponseEntity<ErrorResponse>> handleDataAccessException (DataAccessException ex){
+        ErrorResponse errorResponse = new ErrorResponse(ex.getCode(), ex.getMessage());
+        return Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse));
     }
 }

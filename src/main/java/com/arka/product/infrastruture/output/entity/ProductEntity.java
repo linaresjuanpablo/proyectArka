@@ -40,12 +40,6 @@ public class ProductEntity {
     @Column("quantity")
     private Integer quantity;
 
-
-
-    /*public static ProductEntity fromDomainModel(ProductModel productModel){
-        return new ProductEntity(productModel.getId(), productModel.getUuid(),productModel.getName(), productModel.getDescription(), productModel.getPrice(),
-                productModel.getSku(), productModel.getQuantity());
-    }*/
     public static ProductEntity fromDomainModel(ProductModel productModel){
         return ProductEntity.builder()
                 .id(productModel.getId())
@@ -72,9 +66,6 @@ public class ProductEntity {
                 .build();
     }
 
-    /*public ProductModel toDomainModel(){
-        return new ProductModel(id, uuid, name, description, price, sku, quantity);
-    }*/
 
 
 
