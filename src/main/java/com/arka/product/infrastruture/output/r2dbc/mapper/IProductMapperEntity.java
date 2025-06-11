@@ -12,5 +12,7 @@ public interface IProductMapperEntity {
 
     ProductModel prodModel(R2ProductEntity r2ProductEntity);
 
+    ProductModel getProNameModel(R2ProductEntity r2ProductEntity);
+
 
 }

@@ -6,6 +6,7 @@ import com.arka.product.infrastruture.output.r2dbc.mapper.IProductMapperEntity;
 import com.arka.product.infrastruture.output.r2dbc.repository.IR2ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Component
@@ -26,6 +27,18 @@ public class ProductAdapter implements IProductRepositoryPort {
     @Override
     public Mono<ProductModel> findBySku(String sku) {
         return ir2ProductRepository.findBySku(sku)
+                .map(iProductMapperEntity::prodModel);
+    }
+
+    @Override
+    public Mono<ProductModel> findByName(String name) {
+        return ir2ProductRepository.findByNameIgnoreCase(name)
+                .map(iProductMapperEntity::prodModel);
+    }
+
+    @Override
+    public Flux<ProductModel> findByBrandName(String brandName) {
+        return ir2ProductRepository.findByBrandIgnoreCase(brandName)
                 .map(iProductMapperEntity::prodModel);
     }
 }

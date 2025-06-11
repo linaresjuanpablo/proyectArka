@@ -9,7 +9,9 @@ import com.arka.product.domain.ports.out.IProductRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.mapstruct.ap.shaded.freemarker.core.ReturnInstruction;
+import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.Optional;
@@ -25,13 +27,11 @@ public class ProductUseCase  implements ICreateProductUseCase {
     private final IProductRepositoryPort iProductRepositoryPort;
 
     private static final Integer NAME_MIN_LENGTH = 3;
-    private static final String ERR_SKU_INVALID = "ERR_EMAIL_INVALID";
+    private static final String ERR_SKU_INVALID = "ERR_SKU_INVALID";
     private static final String ERR_PRODUCT_EXISTS = "ERR_PRODUCT_EXISTS";
-    private static final String ERR_PRICE_INVALID = "ERR_PHONE_INVALID";
+    private static final String ERR_PRICE_INVALID = "ERR_PRICE_INVALID";
     private static final String ERR_NAME_INVALID = "ERR_NAME_INVALID";
-    //private static final String ERR_ID_INVALID = "ERR_ID_INVALID";
-    //private static final String ERR_PASSWORD_EMPTY = "ERR_PASSWORD_EMPTY";
-    //private static final String ERR_USER_REGISTRATION = "ERR_USER_REGISTRATION";
+
 
 
     @Override
@@ -76,5 +76,46 @@ public class ProductUseCase  implements ICreateProductUseCase {
 
 
     }
+    @Override
+    public Mono<ProductModel> updateproduct(ProductModel productModel) {
+        return validateProductUpdate(productModel)
+                .doOnNext(p -> System.out.println("Validación pasada: " + p))
+                .flatMap(existing -> {
+                    System.out.println("Buscando SKU: " + productModel.getSku());
+                    return iProductRepositoryPort.findBySku(productModel.getSku());
+                })
+                .switchIfEmpty(Mono.error(new ValidationException("Producto no encontrado: " + productModel.getSku())))
+                .flatMap(found -> {
+                    System.out.println("Producto encontrado: " + found);
+                    found.setName(productModel.getName().toUpperCase());
+                    found.setDescription(productModel.getDescription().toUpperCase());
+                    found.setPrice(productModel.getPrice());
+                    found.setQuantity(productModel.getQuantity());
+                    return iProductRepositoryPort.save(found);
+                })
+                .doOnNext(p -> System.out.println("Producto actualizado: " + p));
+    }
+    private Mono<ProductModel> validateProductUpdate(ProductModel productModel){
+        if (productModel.getName() == null || productModel.getName().length() < 1){
+            return Mono.error(new ValidationException(ERR_NAME_INVALID, "El nombre de producto es invalido"));
+        }
+        if (productModel.getPrice() == null || productModel.getPrice() <= 0){
+            return Mono.error(new ValidationException(ERR_PRICE_INVALID, "El precio debe ser mayor a cero"));
+        }
+        if (productModel.getSku() == null || productModel.getSku().isBlank()){
+            return Mono.error(new ValidationException(ERR_SKU_INVALID, "eL SKU NO PUEDE ESTAR VACIO"));
+        }
+        return Mono.just(productModel);
+    }
 
+    @Override
+    public Mono<ProductModel> getProductByName(String name) {
+        return iProductRepositoryPort.findByName(name)
+                .switchIfEmpty(Mono.error(new ValidationException("ERR_PRODUCT_NOT_FOUND, producto no encontrado con el nombre: " + name)));
+    }
+
+    @Override
+    public Flux<ProductModel> findByBrandName(String brandName) {
+        return iProductRepositoryPort.findByBrandName(brandName);
+    }
 }
